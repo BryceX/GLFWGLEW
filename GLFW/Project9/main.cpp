@@ -150,6 +150,7 @@ int main()
 		myShape[i].fColours[3] = 1.0f;
 	}
 
+
 	//create a windowed mode window and it's OpenGL context
 	GLFWwindow* window;
 	window = glfwCreateWindow(1024, 1024, "Hello World", NULL, NULL);
@@ -171,6 +172,7 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
+
 	//create ID for a vertex buffer object
 	GLuint uiVBO;
 	glGenBuffers(1, &uiVBO);
@@ -189,6 +191,29 @@ int main()
 		//unmap and unbind buffer
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+	//create ID for index buffer object
+	GLuint uiIBO;
+	glGenBuffers(1, &uiIBO);
+
+	//check it succeeded
+	if (uiIBO != 0)
+	{
+		//bind IBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBO);
+		//allocate space for index info on the graphics card
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * sizeof(char), NULL, GL_STATIC_DRAW);
+		//get pointer to newly allocated space on the graphics card
+		GLvoid* iBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
+		//specify the order we'd like to draw our vertices.
+		//In this case they are in sequential order
+		for (int i = 0; i < 3; i++)
+		{
+			((char*)iBuffer)[i] = i;
+		}
+		//unmap and unbind
+		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	//………
 	const float vertexPositions[] =
@@ -224,7 +249,7 @@ int main()
 		glUseProgram(uiProgramFlat);
 
 		glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
-
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBO);
 		//send our orthographic projection info to the shader
 		glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
 
@@ -238,15 +263,17 @@ int main()
 		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
 
 		//draw to the screen
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, NULL);
 
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		//swap front and back buffers
 		glfwSwapBuffers(window);
 
 		//poll for and process events
 		glfwPollEvents();
 	}
-
+	glDeleteBuffers(1, &uiIBO);
 	glfwTerminate();
 	return 0;
 }
