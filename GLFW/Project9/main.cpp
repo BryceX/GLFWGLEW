@@ -6,7 +6,9 @@
 #include <fstream>
 #include <SOIL.h>
 #include <iostream>
+#include <time.h>
 int screenSize = 1024;
+int xPos = 450;
 float* getOrtho(float left, float right, float bottom, float top, float a_fNear, float a_fFar)
 {
 	//to correspond with mat4 in the shader
@@ -164,46 +166,67 @@ int main()
 	}
 
 	//create some vertices
-	Vertex* myShape = new Vertex[3];
-	myShape[0].fPositions[0] = screenSize / 2.0f;
-	myShape[0].fPositions[1] = screenSize / 3.0 + 10.0f;
-	myShape[1].fPositions[0] = screenSize / 2 - 10.0f;
-	myShape[1].fPositions[1] = screenSize / 3.0 - 10.0f;
-	myShape[2].fPositions[0] = screenSize / 2 + 10.0f;
-	myShape[2].fPositions[1] = screenSize / 3.0 - 10.0f;
+	Vertex* playerShip = new Vertex[3];
+	//x position of the top corner
+	playerShip[0].fPositions[0] = screenSize / 2;
+	//y position of the top corner
+	playerShip[0].fPositions[1] = screenSize / 2 + 10.0f;
+	//x position of the left corner 
+	playerShip[1].fPositions[0] = screenSize / 2 - 10.0f;
+	//y position of the left corner
+	playerShip[1].fPositions[1] = screenSize / 2 - 10.0f;
+	//x position of the right corner
+	playerShip[2].fPositions[0] = screenSize / 2 + 10.0f;
+	//y pos right corner
+	playerShip[2].fPositions[1] = screenSize / 2 - 10.0f;
 	for (int i = 0; i < 3; i++)
 	{
-		myShape[i].fPositions[2] = 0.0f;
-		myShape[i].fPositions[3] = 1.0f;
-		myShape[i].fColours[0] = 1.0f;
-		myShape[i].fColours[1] = 0.0f;
-		myShape[i].fColours[2] = 1.0f;
-		myShape[i].fColours[3] = 1.0f;
+		playerShip[i].fPositions[2] = 0.0f;
+		playerShip[i].fPositions[3] = 1.0f;
+		playerShip[i].fColours[0] = 1.0f;
+		playerShip[i].fColours[1] = 0.0f;
+		playerShip[i].fColours[2] = 1.0f;
+		playerShip[i].fColours[3] = 1.0f;
 	}
 	//set up the UVs
-	myShape[0].fUVs[0] = 0.5f; //top of the triangle
-	myShape[0].fUVs[1] = 1.0f;
-	myShape[1].fUVs[0] = 0.0f; //bottom left
-	myShape[1].fUVs[1] = 0.0f;
-	myShape[2].fUVs[0] = 1.0f; //bottom right
-	myShape[2].fUVs[1] = 0.0f;
+	playerShip[0].fUVs[0] = 0.5f; //top of the triangle
+	playerShip[0].fUVs[1] = 1.0f;
+	playerShip[1].fUVs[0] = 0.0f; //bottom left
+	playerShip[1].fUVs[1] = 0.0f;
+	playerShip[2].fUVs[0] = 1.0f; //bottom right
+	playerShip[2].fUVs[1] = 0.0f;
 
+	Vertex* stars = new Vertex[360];
+	stars[0].fPositions[0] = xPos;
+	stars[0].fPositions[1] = screenSize/2;
 
-	Vertex* myAsteroids = new Vertex[5];
-	myAsteroids[0].fPositions[0] = screenSize / 1.5f;
-	myAsteroids[0].fPositions[1] = screenSize / 3.0f;
-	myAsteroids[1].fPositions[0] = screenSize / 2.0f;
-	myAsteroids[1].fPositions[1] = screenSize / 3.0f;
-	myAsteroids[2].fPositions[0] = screenSize / 2.0f;
-	myAsteroids[2].fPositions[1] = screenSize / 3.0f;
+	srand(time(NULL));	// seed the random number jesus
+	for (int i = 0; i < 360; i++)
+	{
+		stars[i].fPositions[0] = rand() % 1025;
+		stars[i].fPositions[1] = rand() % 1025;
+		stars[i].fPositions[2] = 0.0f;
+		stars[i].fPositions[3] = 1.0f;
+		stars[i].fColours[0] = 1.0f;
+		stars[i].fColours[1] = 1.0f;
+		stars[i].fColours[2] = 1.0f;
+		stars[i].fColours[3] = 1.0f;
+	}
+	Vertex* asteroids0 = new Vertex[5];
+	asteroids0[0].fPositions[0] = screenSize / 1.5f;
+	asteroids0[0].fPositions[1] = screenSize / 3.0f;
+	asteroids0[1].fPositions[0] = screenSize / 2.0f;
+	asteroids0[1].fPositions[1] = screenSize / 3.0f;
+	asteroids0[2].fPositions[0] = screenSize / 2.0f;
+	asteroids0[2].fPositions[1] = screenSize / 3.0f;
 	for (int i = 0; i < 3; i++)
 	{
-		myAsteroids[i].fPositions[2] = 0.0f;
-		myAsteroids[i].fPositions[3] = 1.0f;
-		myAsteroids[i].fColours[0] = 1.0f;
-		myAsteroids[i].fColours[1] = 0.0f;
-		myAsteroids[i].fColours[0] = 1.0f;
-		myAsteroids[i].fColours[1] = 1.0f;
+		asteroids0[i].fPositions[2] = 0.0f;
+		asteroids0[i].fPositions[3] = 1.0f;
+		asteroids0[i].fColours[0] = 1.0f;
+		asteroids0[i].fColours[1] = 0.0f;
+		asteroids0[i].fColours[0] = 1.0f;
+		asteroids0[i].fColours[1] = 1.0f;
 	}
 
 	//create a windowed mode window and it's OpenGL context
@@ -228,34 +251,52 @@ int main()
 		return -1;
 	}
 
-	//create ID for a vertex buffer object
-	GLuint uiVBO;
-	glGenBuffers(1, &uiVBO);
+	//create ID for a vertex buffer object for the player
+	GLuint uiVBOplayerShip;
+	glGenBuffers(1, &uiVBOplayerShip);
 
 	//check it succeeded
-	if (uiVBO != 0)
+	if (uiVBOplayerShip != 0)
 	{
 		//bind VBO
-		glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
 		//allocate space for vertices on the graphics card
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 3, NULL, GL_STATIC_DRAW);
 		//get pointer to allocated space on the graphics card
 		GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 		//copy data to graphics card
-		memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+		memcpy(vBuffer, playerShip, sizeof(Vertex)* 3);
 		//unmap and unbind buffer
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
-	//create ID for index buffer object
-	GLuint uiIBO;
-	glGenBuffers(1, &uiIBO);
+
+	//create ID for a vertex buffer object for the star
+	GLuint uiVBOstar;
+	glGenBuffers(1, &uiVBOstar);
+	if (uiVBOstar != 0)
+	{
+		//bind VBO
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBOstar);
+		//allocate space for vertices on the graphics card
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 360, NULL, GL_STATIC_DRAW);
+		//get pointer to allocated space on the graphics card
+		GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+		//copy data to graphics card
+		memcpy(vBuffer, stars, sizeof(Vertex)* 360);
+		//unmap and unbind buffer
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+	//create ID for index buffer object for the player ship
+	GLuint uiIBOplayerShip;
+	glGenBuffers(1, &uiIBOplayerShip);
 
 	//check it succeeded
-	if (uiIBO != 0)
+	if (uiIBOplayerShip != 0)
 	{
 		//bind IBO
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOplayerShip);
 		//allocate space for index info on the graphics card
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * sizeof(char), NULL, GL_STATIC_DRAW);
 		//get pointer to newly allocated space on the graphics card
@@ -270,21 +311,30 @@ int main()
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
+	GLuint uiIBOstar;
+	glGenBuffers(1, &uiIBOstar);
+
+	//check it succeeded
+	if (uiIBOstar != 0)
+	{
+		//bind IBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOstar);
+		//allocate space for index info on the graphics card
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 360 * sizeof(char), NULL, GL_STATIC_DRAW);
+		//get pointer to newly allocated space on the graphics card
+		GLvoid* iBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
+		//specify the order we'd like to draw our vertices.
+		//In this case they are in sequential order
+		for (int i = 0; i < 360; i++)
+		{
+			((char*)iBuffer)[i] = i;
+		}
+		//unmap and unbind
+		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+
 	//………
-	const float vertexPositions[] =
-	{
-		screenSize/2 , screenSize / 3.0 + 10.0f, 0.0f, 1.0f,
-		screenSize/2 - 5.0f, screenSize / 3.0 - 10.0f, 0.0f, 1.0f,
-		screenSize/2 + 5.0f, screenSize / 3.0 - 10.0f, 0.0f, 1.0f,
-	};
-
-	const float vertexColours[] =
-	{
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f, 1.0f,
-	};
-
 	//create shader program
 	GLuint uiProgramFlat = CreateProgram("VertexShader.glsl", "FlatFragmentShader.glsl");
 	GLuint uiProgramTextured = CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");
@@ -296,49 +346,85 @@ int main()
 	//loop until the user closes the window
 	int width = 50, height = 50, bpp = 4;
 	GLuint uiTextureId = loadTexture("zeroprofile.jpg", width, height, bpp);
+
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 		//draw code goes here
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		//enable shaders
-		glUseProgram(uiProgramFlat);
+
+		//this is the fucking ship
+		{
 		glUseProgram(uiProgramTextured);
 		glBindTexture(GL_TEXTURE_2D, uiTextureId);
-		glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBO);
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOplayerShip);
 		//send our orthographic projection info to the shader
 		glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
-
 		//enable the vertex array state, since we're sending in an array of vertices
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
-
 		//specify where our vertex array is, how many components each vertex has, 
 		//the data type of each component and whether the data is normalised or not
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 8));
 		//draw to the screen
 		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, NULL);
-
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		//swap front and back buffers
 		glBindTexture(GL_TEXTURE_2D, 0);
+		
+		}
+
+		//starz
+		{
+			glUseProgram(uiProgramFlat);
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBOstar);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOstar);
+			//send our orthographic projection info to the shader
+			glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
+			//enable the vertex array state, since we're sending in an array of vertices
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			//specify where our vertex array is, how many components each vertex has, 
+			//the data type of each component and whether the data is normalised or not
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+			//draw to the screen
+			glDrawElements(GL_POINTS, 360, GL_UNSIGNED_BYTE, NULL);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			//swap front and back buffers
+			glBindTexture(GL_TEXTURE_2D, 0);
+			
+			
+		}
+
 		glfwSwapBuffers(window);
+
+
+
+
+
+
+		//MOVEMENT
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		{
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[1] += screenSize*.0001f;
+				playerShip[i].fPositions[1] += screenSize*.0001f;
 			}
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 			//copy data to graphics card
-			memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+			memcpy(vBuffer, playerShip, sizeof(Vertex)* 3);
 			//unmap and unbind buffer
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -348,12 +434,12 @@ int main()
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[1] -= screenSize*.0001f;
+				playerShip[i].fPositions[1] -= screenSize*.0001f;
 			}
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 			//copy data to graphics card
-			memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+			memcpy(vBuffer, playerShip, sizeof(Vertex)* 3);
 			//unmap and unbind buffer
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -363,12 +449,12 @@ int main()
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[0] += screenSize*.0001f;
+				playerShip[i].fPositions[0] += screenSize*.0001f;
 			}
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 			//copy data to graphics card
-			memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+			memcpy(vBuffer, playerShip, sizeof(Vertex)* 3);
 			//unmap and unbind buffer
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -378,12 +464,12 @@ int main()
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[0] -= screenSize*.0001f;
+				playerShip[i].fPositions[0] -= screenSize*.0001f;
 			}
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 			//copy data to graphics card
-			memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+			memcpy(vBuffer, playerShip, sizeof(Vertex)* 3);
 			//unmap and unbind buffer
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -393,7 +479,7 @@ int main()
 		//poll for and process events
 		glfwPollEvents();
 	}
-	glDeleteBuffers(1, &uiIBO);
+	glDeleteBuffers(1, &uiIBOplayerShip);
 	glfwTerminate();
 	return 0;
 }

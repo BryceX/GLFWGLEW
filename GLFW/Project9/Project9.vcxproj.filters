@@ -33,4 +33,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FlatFragmentShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="TexturedFragmentShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="VertexShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
