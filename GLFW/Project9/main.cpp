@@ -201,7 +201,7 @@ int main()
 		myAsteroids[i].fPositions[2] = 0.0f;
 		myAsteroids[i].fPositions[3] = 1.0f;
 		myAsteroids[i].fColours[0] = 1.0f;
-		myAsteroids[i].fColours[1] = 1.0f;
+		myAsteroids[i].fColours[1] = 0.0f;
 		myAsteroids[i].fColours[0] = 1.0f;
 		myAsteroids[i].fColours[1] = 1.0f;
 	}
@@ -358,12 +358,12 @@ int main()
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		{
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[1] += screenSize*.00001f;
+				myShape[i].fPositions[0] += screenSize*.0001f;
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -373,6 +373,22 @@ int main()
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		{
+			//move forward
+			for (int i = 0; i < 3; i++)
+			{
+				myShape[i].fPositions[0] -= screenSize*.0001f;
+			}
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+			//copy data to graphics card
+			memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+			//unmap and unbind buffer
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+
 
 		//poll for and process events
 		glfwPollEvents();
