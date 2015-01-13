@@ -4,7 +4,8 @@
 #include <vector>
 #include <string>
 #include <fstream>
-
+#include <SOIL.h>
+#include <iostream>
 int screenSize = 1024;
 float* getOrtho(float left, float right, float bottom, float top, float a_fNear, float a_fFar)
 {
@@ -26,11 +27,39 @@ float* getOrtho(float left, float right, float bottom, float top, float a_fNear,
 	toReturn[15] = 1;
 	return toReturn;
 }
+unsigned int loadTexture(const char* a_pFilename, int & a_iWidth, int & a_iHeight, int & a_iBPP)
+{
+	unsigned int uiTextureID = 0;
+	//check file exists
+	if (a_pFilename != nullptr)
+	{
+		//read in image data from file
+		unsigned char* pImageData = SOIL_load_image(a_pFilename, &a_iWidth, &a_iHeight, &a_iBPP, SOIL_LOAD_AUTO);
+
+		//check for successful read
+		if (pImageData)
+		{
+			//create opengl texture handle
+			uiTextureID = SOIL_create_OGL_texture(pImageData, a_iWidth, a_iHeight, a_iBPP,
+				SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+			//clear what was read in from file now that it is stored in the handle
+			SOIL_free_image_data(pImageData);
+		}
+
+		//check for errors
+		if (uiTextureID == 0)
+		{
+			std::cout << "SOIL loading error: " << SOIL_last_result() << std::endl;
+		}
+		return uiTextureID;
+	}
+}
 //declare our vertex structure
 struct Vertex
 {
 	float fPositions[4];
 	float fColours[4];
+	float fUVs[2];
 };
 
 GLuint CreateShader(GLenum a_eShaderType, const char *a_strShaderFile)
@@ -125,6 +154,7 @@ GLuint CreateProgram(const char *a_vertex, const char *a_frag)
 	return uiProgram;
 }
 
+
 int main()
 {
 	//Initialise GLFW
@@ -132,24 +162,49 @@ int main()
 	{
 		return -1;
 	}
+
 	//create some vertices
 	Vertex* myShape = new Vertex[3];
 	myShape[0].fPositions[0] = screenSize / 2.0f;
 	myShape[0].fPositions[1] = screenSize / 3.0 + 10.0f;
-	myShape[1].fPositions[0] = screenSize / 2 - 5.0f;
+	myShape[1].fPositions[0] = screenSize / 2 - 10.0f;
 	myShape[1].fPositions[1] = screenSize / 3.0 - 10.0f;
-	myShape[2].fPositions[0] = screenSize / 2 + 5.0f;
+	myShape[2].fPositions[0] = screenSize / 2 + 10.0f;
 	myShape[2].fPositions[1] = screenSize / 3.0 - 10.0f;
 	for (int i = 0; i < 3; i++)
 	{
 		myShape[i].fPositions[2] = 0.0f;
 		myShape[i].fPositions[3] = 1.0f;
-		myShape[i].fColours[0] = 0.0f;
+		myShape[i].fColours[0] = 1.0f;
 		myShape[i].fColours[1] = 0.0f;
 		myShape[i].fColours[2] = 1.0f;
 		myShape[i].fColours[3] = 1.0f;
 	}
+	//set up the UVs
+	myShape[0].fUVs[0] = 0.5f; //top of the triangle
+	myShape[0].fUVs[1] = 1.0f;
+	myShape[1].fUVs[0] = 0.0f; //bottom left
+	myShape[1].fUVs[1] = 0.0f;
+	myShape[2].fUVs[0] = 1.0f; //bottom right
+	myShape[2].fUVs[1] = 0.0f;
 
+
+	Vertex* myAsteroids = new Vertex[5];
+	myAsteroids[0].fPositions[0] = screenSize / 1.5f;
+	myAsteroids[0].fPositions[1] = screenSize / 3.0f;
+	myAsteroids[1].fPositions[0] = screenSize / 2.0f;
+	myAsteroids[1].fPositions[1] = screenSize / 3.0f;
+	myAsteroids[2].fPositions[0] = screenSize / 2.0f;
+	myAsteroids[2].fPositions[1] = screenSize / 3.0f;
+	for (int i = 0; i < 3; i++)
+	{
+		myAsteroids[i].fPositions[2] = 0.0f;
+		myAsteroids[i].fPositions[3] = 1.0f;
+		myAsteroids[i].fColours[0] = 1.0f;
+		myAsteroids[i].fColours[1] = 1.0f;
+		myAsteroids[i].fColours[0] = 1.0f;
+		myAsteroids[i].fColours[1] = 1.0f;
+	}
 
 	//create a windowed mode window and it's OpenGL context
 	GLFWwindow* window;
@@ -218,7 +273,7 @@ int main()
 	//………
 	const float vertexPositions[] =
 	{
-		screenSize/ 2.0, screenSize / 3.0 + 10.0f, 0.0f, 1.0f,
+		screenSize/2 , screenSize / 3.0 + 10.0f, 0.0f, 1.0f,
 		screenSize/2 - 5.0f, screenSize / 3.0 - 10.0f, 0.0f, 1.0f,
 		screenSize/2 + 5.0f, screenSize / 3.0 - 10.0f, 0.0f, 1.0f,
 	};
@@ -232,22 +287,24 @@ int main()
 
 	//create shader program
 	GLuint uiProgramFlat = CreateProgram("VertexShader.glsl", "FlatFragmentShader.glsl");
-
+	GLuint uiProgramTextured = CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");
 	//find the position of the matrix variable in the shader so we can send info there later
 	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramFlat, "MVP");
 
 	//set up the mapping of the screen to pixel co-ordinates. Try changing these values to see what happens.
 	float *orthographicProjection = getOrtho(0, 1024, 0, 720, 0, 100);
 	//loop until the user closes the window
+	int width = 50, height = 50, bpp = 4;
+	GLuint uiTextureId = loadTexture("zeroprofile.jpg", width, height, bpp);
 	while (!glfwWindowShouldClose(window))
 	{
 		//draw code goes here
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
 		//enable shaders
 		glUseProgram(uiProgramFlat);
-
+		glUseProgram(uiProgramTextured);
+		glBindTexture(GL_TEXTURE_2D, uiTextureId);
 		glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBO);
 		//send our orthographic projection info to the shader
@@ -256,19 +313,66 @@ int main()
 		//enable the vertex array state, since we're sending in an array of vertices
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 
 		//specify where our vertex array is, how many components each vertex has, 
 		//the data type of each component and whether the data is normalised or not
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
-
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 8));
 		//draw to the screen
 		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, NULL);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		//swap front and back buffers
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glfwSwapBuffers(window);
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		{
+			//move forward
+			for (int i = 0; i < 3; i++)
+			{
+				myShape[i].fPositions[1] += screenSize*.0001f;
+			}
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+			//copy data to graphics card
+			memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+			//unmap and unbind buffer
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		{
+			//move forward
+			for (int i = 0; i < 3; i++)
+			{
+				myShape[i].fPositions[1] -= screenSize*.0001f;
+			}
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+			//copy data to graphics card
+			memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+			//unmap and unbind buffer
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		{
+			//move forward
+			for (int i = 0; i < 3; i++)
+			{
+				myShape[i].fPositions[1] += screenSize*.00001f;
+			}
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
+			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+			//copy data to graphics card
+			memcpy(vBuffer, myShape, sizeof(Vertex)* 3);
+			//unmap and unbind buffer
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
 
 		//poll for and process events
 		glfwPollEvents();

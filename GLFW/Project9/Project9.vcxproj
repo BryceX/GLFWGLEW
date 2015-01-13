@@ -41,8 +41,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\bryson.au\Documents\Visual Studio 2013\Projects\Project9\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\bryson.au\Documents\Visual Studio 2013\Projects\Project9\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Include;$(SolutionDir)SOIL\src;C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Lib;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\bryson.au\Documents\Visual Studio 2013\Projects\Project9\Lib;C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -52,7 +52,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;opengl32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
