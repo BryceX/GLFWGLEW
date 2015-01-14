@@ -9,6 +9,7 @@
 #include <time.h>
 int screenSize = 1024;
 int xPos = 450;
+int astConstant = 40;
 float* getOrtho(float left, float right, float bottom, float top, float a_fNear, float a_fFar)
 {
 	//to correspond with mat4 in the shader
@@ -213,13 +214,24 @@ int main()
 		stars[i].fColours[3] = 1.0f;
 	}
 	Vertex* asteroids0 = new Vertex[60];
-	asteroids0[0].fPositions[0] = screenSize / 1.5f;
-	asteroids0[0].fPositions[1] = screenSize / 3.0f;
-	asteroids0[1].fPositions[0] = screenSize / 2.0f;
-	asteroids0[1].fPositions[1] = screenSize / 3.0f;
-	asteroids0[2].fPositions[0] = screenSize / 2.0f;
-	asteroids0[2].fPositions[1] = screenSize / 3.0f;
-	for (int i = 0; i < 3; i++)
+	asteroids0[0].fPositions[0] = screenSize * .2f;
+	asteroids0[0].fPositions[1] = screenSize * .2f;
+
+	asteroids0[1].fPositions[0] = (screenSize * .2f) + astConstant;
+	asteroids0[1].fPositions[1] = (screenSize * .2f) - astConstant;
+
+	asteroids0[2].fPositions[0] = (screenSize * .2f) + 2*astConstant;
+	asteroids0[2].fPositions[1] = (screenSize * .2f) - astConstant;
+
+	asteroids0[3].fPositions[0] = (screenSize * .2f) + 3*astConstant;
+	asteroids0[3].fPositions[1] = (screenSize * .2f);
+
+	asteroids0[4].fPositions[0] = (screenSize * .2f) + 2*astConstant;
+	asteroids0[4].fPositions[1] = (screenSize * .2f) + astConstant;
+
+	asteroids0[5].fPositions[0] = (screenSize * .2f) + astConstant;
+	asteroids0[5].fPositions[1] = (screenSize*.2f) + astConstant;
+	for (int i = 0; i < 6; i++)
 	{
 		asteroids0[i].fPositions[2] = 0.0f;
 		asteroids0[i].fPositions[3] = 1.0f;
@@ -289,9 +301,9 @@ int main()
 	if (uiVBOasteroid != 0)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, uiVBOasteroid);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 60, NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 6, NULL, GL_STATIC_DRAW);
 		GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-		memcpy(vBuffer, asteroids0, sizeof(Vertex)* 60);
+		memcpy(vBuffer, asteroids0, sizeof(Vertex)* 6);
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -322,44 +334,30 @@ int main()
 	GLuint uiIBOstar;
 	glGenBuffers(1, &uiIBOstar);
 
-	//check it succeeded
 	if (uiIBOstar != 0)
 	{
-		//bind IBO
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOstar);
-		//allocate space for index info on the graphics card
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 360 * sizeof(char), NULL, GL_STATIC_DRAW);
-		//get pointer to newly allocated space on the graphics card
 		GLvoid* iBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
-		//specify the order we'd like to draw our vertices.
-		//In this case they are in sequential order
 		for (int i = 0; i < 360; i++)
 		{
 			((char*)iBuffer)[i] = i;
 		}
-		//unmap and unbind
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	GLuint uiIBOasteroids;
 	glGenBuffers(1, &uiIBOasteroids);
 
-	//check it succeeded
 	if (uiIBOasteroids != 0)
 	{
-		//bind IBO
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOasteroids);
-		//allocate space for index info on the graphics card
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 60 * sizeof(char), NULL, GL_STATIC_DRAW);
-		//get pointer to newly allocated space on the graphics card
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(char), NULL, GL_STATIC_DRAW);
 		GLvoid* iBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
-		//specify the order we'd like to draw our vertices.
-		//In this case they are in sequential order
-		for (int i = 0; i < 60; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			((char*)iBuffer)[i] = i;
 		}
-		//unmap and unbind
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
@@ -436,17 +434,17 @@ int main()
 
 		//meant to be asteroids
 		{
-			glUseProgram(uiProgramTextured);
-			glBindTexture(GL_TEXTURE_2D, uiTextureId);
+			glUseProgram(uiProgramFlat);
+			//glBindTexture(GL_TEXTURE_2D, uiTextureId);
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBOasteroid);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOasteroids);
 			glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
 			//draw to the screen
-			glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_BYTE, NULL);
+			glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_BYTE, NULL);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			//swap front and back buffers
