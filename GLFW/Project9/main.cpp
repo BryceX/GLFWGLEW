@@ -212,7 +212,7 @@ int main()
 		stars[i].fColours[2] = 1.0f;
 		stars[i].fColours[3] = 1.0f;
 	}
-	Vertex* asteroids0 = new Vertex[5];
+	Vertex* asteroids0 = new Vertex[60];
 	asteroids0[0].fPositions[0] = screenSize / 1.5f;
 	asteroids0[0].fPositions[1] = screenSize / 3.0f;
 	asteroids0[1].fPositions[0] = screenSize / 2.0f;
@@ -223,9 +223,9 @@ int main()
 	{
 		asteroids0[i].fPositions[2] = 0.0f;
 		asteroids0[i].fPositions[3] = 1.0f;
-		asteroids0[i].fColours[0] = 1.0f;
-		asteroids0[i].fColours[1] = 0.0f;
-		asteroids0[i].fColours[0] = 1.0f;
+		asteroids0[i].fColours[0] = 0.0f;
+		asteroids0[i].fColours[1] = 1.0f;
+		asteroids0[i].fColours[0] = 0.0f;
 		asteroids0[i].fColours[1] = 1.0f;
 	}
 
@@ -276,18 +276,26 @@ int main()
 	glGenBuffers(1, &uiVBOstar);
 	if (uiVBOstar != 0)
 	{
-		//bind VBO
 		glBindBuffer(GL_ARRAY_BUFFER, uiVBOstar);
-		//allocate space for vertices on the graphics card
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 360, NULL, GL_STATIC_DRAW);
-		//get pointer to allocated space on the graphics card
 		GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-		//copy data to graphics card
 		memcpy(vBuffer, stars, sizeof(Vertex)* 360);
-		//unmap and unbind buffer
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
+	//VBO for asteroids
+	GLuint uiVBOasteroid;
+	glGenBuffers(1, &uiVBOasteroid);
+	if (uiVBOasteroid != 0)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBOasteroid);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 60, NULL, GL_STATIC_DRAW);
+		GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+		memcpy(vBuffer, asteroids0, sizeof(Vertex)* 60);
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
 	//create ID for index buffer object for the player ship
 	GLuint uiIBOplayerShip;
 	glGenBuffers(1, &uiIBOplayerShip);
@@ -333,7 +341,28 @@ int main()
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
+	GLuint uiIBOasteroids;
+	glGenBuffers(1, &uiIBOasteroids);
 
+	//check it succeeded
+	if (uiIBOasteroids != 0)
+	{
+		//bind IBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOasteroids);
+		//allocate space for index info on the graphics card
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 60 * sizeof(char), NULL, GL_STATIC_DRAW);
+		//get pointer to newly allocated space on the graphics card
+		GLvoid* iBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
+		//specify the order we'd like to draw our vertices.
+		//In this case they are in sequential order
+		for (int i = 0; i < 60; i++)
+		{
+			((char*)iBuffer)[i] = i;
+		}
+		//unmap and unbind
+		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
 	//………
 	//create shader program
 	GLuint uiProgramFlat = CreateProgram("VertexShader.glsl", "FlatFragmentShader.glsl");
@@ -355,6 +384,30 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		//enable shaders
+
+		//starz
+		{
+			glUseProgram(uiProgramFlat);
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBOstar);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOstar);
+			//send our orthographic projection info to the shader
+			glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
+			//enable the vertex array state, since we're sending in an array of vertices
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			//specify where our vertex array is, how many components each vertex has, 
+			//the data type of each component and whether the data is normalised or not
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+			//draw to the screen
+			glDrawElements(GL_POINTS, 360, GL_UNSIGNED_BYTE, NULL);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			//swap front and back buffers
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
+
 
 		//this is the fucking ship
 		{
@@ -379,32 +432,29 @@ int main()
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		//swap front and back buffers
 		glBindTexture(GL_TEXTURE_2D, 0);
-		
 		}
 
-		//starz
+		//meant to be asteroids
 		{
-			glUseProgram(uiProgramFlat);
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBOstar);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOstar);
-			//send our orthographic projection info to the shader
+			glUseProgram(uiProgramTextured);
+			glBindTexture(GL_TEXTURE_2D, uiTextureId);
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBOasteroid);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOasteroids);
 			glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
-			//enable the vertex array state, since we're sending in an array of vertices
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
-			//specify where our vertex array is, how many components each vertex has, 
-			//the data type of each component and whether the data is normalised or not
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
 			//draw to the screen
-			glDrawElements(GL_POINTS, 360, GL_UNSIGNED_BYTE, NULL);
+			glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_BYTE, NULL);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			//swap front and back buffers
 			glBindTexture(GL_TEXTURE_2D, 0);
-			
-			
+
 		}
+
+		
 
 		glfwSwapBuffers(window);
 
