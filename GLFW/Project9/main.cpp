@@ -214,23 +214,23 @@ int main()
 		stars[i].fColours[3] = 1.0f;
 	}
 	Vertex* asteroids0 = new Vertex[60];
-	asteroids0[0].fPositions[0] = screenSize * .2f;
-	asteroids0[0].fPositions[1] = screenSize * .2f;
+	asteroids0[0].fPositions[0] = rand() % 1025;
+	asteroids0[0].fPositions[1] = rand() % 1025;
 
-	asteroids0[1].fPositions[0] = (screenSize * .2f) + astConstant;
-	asteroids0[1].fPositions[1] = (screenSize * .2f) - astConstant;
+	asteroids0[1].fPositions[0] = asteroids0[0].fPositions[0] + astConstant;
+	asteroids0[1].fPositions[1] = asteroids0[0].fPositions[1] - astConstant;
 
-	asteroids0[2].fPositions[0] = (screenSize * .2f) + 2*astConstant;
-	asteroids0[2].fPositions[1] = (screenSize * .2f) - astConstant;
+	asteroids0[2].fPositions[0] = asteroids0[0].fPositions[0] + 2 * astConstant;
+	asteroids0[2].fPositions[1] = asteroids0[0].fPositions[1] - astConstant;
 
-	asteroids0[3].fPositions[0] = (screenSize * .2f) + 3*astConstant;
-	asteroids0[3].fPositions[1] = (screenSize * .2f);
+	asteroids0[3].fPositions[0] = asteroids0[0].fPositions[0] + 3 * astConstant;
+	asteroids0[3].fPositions[1] = asteroids0[0].fPositions[1];
 
-	asteroids0[4].fPositions[0] = (screenSize * .2f) + 2*astConstant;
-	asteroids0[4].fPositions[1] = (screenSize * .2f) + astConstant;
+	asteroids0[4].fPositions[0] = asteroids0[0].fPositions[0] + 2 * astConstant;
+	asteroids0[4].fPositions[1] = asteroids0[0].fPositions[1] + astConstant;
 
-	asteroids0[5].fPositions[0] = (screenSize * .2f) + astConstant;
-	asteroids0[5].fPositions[1] = (screenSize*.2f) + astConstant;
+	asteroids0[5].fPositions[0] = asteroids0[0].fPositions[0] + astConstant;
+	asteroids0[5].fPositions[1] = asteroids0[0].fPositions[1] + astConstant;
 	for (int i = 0; i < 6; i++)
 	{
 		asteroids0[i].fPositions[2] = 0.0f;
