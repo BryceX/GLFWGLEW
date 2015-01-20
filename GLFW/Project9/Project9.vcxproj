@@ -41,7 +41,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Include;$(SolutionDir)SOIL\src;C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Lib;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Include;$(SolutionDir)SOIL\src;$(SolutionDir)Lib;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\bryson.au\Documents\Visual Studio 2013\Projects\Project9\Lib;C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -71,11 +71,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="Globals.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>

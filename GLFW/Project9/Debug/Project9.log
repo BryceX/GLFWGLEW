@@ -1,34 +1,78 @@
-﻿Build started 1/14/2015 12:29:47 PM.
+﻿Build started 1/20/2015 11:35:28 AM.
      1>Project "C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Project9\Project9.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Project9.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Globals.cpp Player.cpp main.cpp
          main.cpp
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(21): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(23): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(25): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(22): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(24): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(26): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(172): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(201): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(202): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(204): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(207): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(208): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(221): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(222): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(59): warning C4715: 'loadTexture' : not all control paths return a value
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\glfwglewtut.exe" /INCREMENTAL /NOLOGO glew32.lib opengl32.lib SOIL.lib glfw3.lib opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\glfwglewtut.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\glfwglewtut.lib" /MACHINE:X86 Debug\Environment.obj
-         Debug\main.obj
-         Debug\Player.obj
-         LINK : C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\glfwglewtut.exe not found or not built by the last incremental link; performing full link
-     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-     1>SOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'SOIL.lib(image_DXT.obj)' or at 'C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\vc120.pdb'; linking object as if no debug info
-     1>SOIL.lib(image_helper.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'SOIL.lib(image_helper.obj)' or at 'C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\vc120.pdb'; linking object as if no debug info
-     1>SOIL.lib(SOIL.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'SOIL.lib(SOIL.obj)' or at 'C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\vc120.pdb'; linking object as if no debug info
-     1>SOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'SOIL.lib(stb_image_aug.obj)' or at 'C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\vc120.pdb'; linking object as if no debug info
-         Project9.vcxproj -> C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Debug\glfwglewtut.exe
-     1>Done Building Project "C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Project9\Project9.vcxproj" (Build target(s)).
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(173): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(175): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(178): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(179): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(192): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(193): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(258): error C2065: 'playerShip' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(447): error C2065: 'playerShip' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(447): error C2228: left of '.fPositions' must have class/struct/union
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(447): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(447): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(452): error C2065: 'playerShip' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(462): error C2065: 'playerShip' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(462): error C2228: left of '.fPositions' must have class/struct/union
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(462): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(462): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(467): error C2065: 'playerShip' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(477): error C2065: 'playerShip' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(477): error C2228: left of '.fPositions' must have class/struct/union
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(477): error C2065: 'screenSize' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(482): error C2065: 'playerShip' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(492): error C2065: 'playerShip' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(492): error C2228: left of '.fPositions' must have class/struct/union
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(492): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(492): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\main.cpp(497): error C2065: 'playerShip' : undeclared identifier
+         Player.cpp
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(6): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(6): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(8): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(8): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(10): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(10): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(12): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(12): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(14): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(14): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(16): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(16): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(36): error C2065: 'window' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(41): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(41): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(43): error C2065: 'uiVBO' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(51): error C2065: 'window' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(56): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(56): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(58): error C2065: 'uiVBO' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(66): error C2065: 'window' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(71): error C2065: 'myShape' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(71): error C2228: left of '.fPositions' must have class/struct/union
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(71): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(71): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(73): error C2065: 'uiVBO' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(76): error C2065: 'myShape' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(81): error C2065: 'window' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(86): error C2065: 'myShape' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(86): error C2228: left of '.fPositions' must have class/struct/union
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(86): error C2597: illegal reference to non-static member 'Globals::screenSize'
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(86): error C3867: 'Globals::screenSize': function call missing argument list; use '&Globals::screenSize' to create a pointer to member
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(88): error C2065: 'uiVBO' : undeclared identifier
+     1>c:\users\bryson.au\documents\github\glfwglew\glfw\project9\player.cpp(91): error C2065: 'myShape' : undeclared identifier
+         Globals.cpp
+         Generating Code...
+     1>Done Building Project "C:\Users\bryson.au\Documents\GitHub\GLFWGLEW\GLFW\Project9\Project9.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.30
+Time Elapsed 00:00:01.44

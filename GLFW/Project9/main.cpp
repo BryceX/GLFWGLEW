@@ -7,7 +7,8 @@
 #include <SOIL.h>
 #include <iostream>
 #include <time.h>
-int screenSize = 1024;
+#include "Globals.h"
+#include "Player.h"
 int xPos = 450;
 int astConstant = 40;
 float* getOrtho(float left, float right, float bottom, float top, float a_fNear, float a_fFar)
@@ -58,12 +59,7 @@ unsigned int loadTexture(const char* a_pFilename, int & a_iWidth, int & a_iHeigh
 	}
 }
 //declare our vertex structure
-struct Vertex
-{
-	float fPositions[4];
-	float fColours[4];
-	float fUVs[2];
-};
+
 
 GLuint CreateShader(GLenum a_eShaderType, const char *a_strShaderFile)
 {
@@ -161,45 +157,21 @@ GLuint CreateProgram(const char *a_vertex, const char *a_frag)
 int main()
 {
 	//Initialise GLFW
+	
+	Globals myGlobal = Globals::instance();
+
 	if (!glfwInit())
 	{
 		return -1;
 	}
-
+	myGlobal.window = glfwCreateWindow(1024, 1024, "Hello World", NULL, NULL);
+	//@terrehbyte - bryson doesn't actually make the window he's using here, see below
 	//create some vertices
-	Vertex* playerShip = new Vertex[3];
-	//x position of the top corner
-	playerShip[0].fPositions[0] = screenSize / 2;
-	//y position of the top corner
-	playerShip[0].fPositions[1] = screenSize / 2 + 10.0f;
-	//x position of the left corner 
-	playerShip[1].fPositions[0] = screenSize / 2 - 10.0f;
-	//y position of the left corner
-	playerShip[1].fPositions[1] = screenSize / 2 - 10.0f;
-	//x position of the right corner
-	playerShip[2].fPositions[0] = screenSize / 2 + 10.0f;
-	//y pos right corner
-	playerShip[2].fPositions[1] = screenSize / 2 - 10.0f;
-	for (int i = 0; i < 3; i++)
-	{
-		playerShip[i].fPositions[2] = 0.0f;
-		playerShip[i].fPositions[3] = 1.0f;
-		playerShip[i].fColours[0] = 1.0f;
-		playerShip[i].fColours[1] = 0.0f;
-		playerShip[i].fColours[2] = 1.0f;
-		playerShip[i].fColours[3] = 1.0f;
-	}
-	//set up the UVs
-	playerShip[0].fUVs[0] = 0.5f; //top of the triangle
-	playerShip[0].fUVs[1] = 1.0f;
-	playerShip[1].fUVs[0] = 0.0f; //bottom left
-	playerShip[1].fUVs[1] = 0.0f;
-	playerShip[2].fUVs[0] = 1.0f; //bottom right
-	playerShip[2].fUVs[1] = 0.0f;
+	
 
 	Vertex* stars = new Vertex[360];
 	stars[0].fPositions[0] = xPos;
-	stars[0].fPositions[1] = screenSize/2;
+	stars[0].fPositions[1] = myGlobal.screenSize/2;
 
 	srand(time(NULL));	// seed the random number jesus
 	for (int i = 0; i < 360; i++)
@@ -220,34 +192,22 @@ int main()
 		// 1st vert
 		asteroids0[0+i].fPositions[0] = rand() % 900;
 		asteroids0[0+i].fPositions[1] = rand() % 900;
-
 		// 2nd vert
 		asteroids0[1+i].fPositions[0] = asteroids0[0+i].fPositions[0] + astConstant;
 		asteroids0[1+i].fPositions[1] = asteroids0[0+i].fPositions[1] - astConstant;
 
-		
 		asteroids0[2+i].fPositions[0] = asteroids0[0+i].fPositions[0] + 2 * astConstant;
 		asteroids0[2+i].fPositions[1] = asteroids0[0+i].fPositions[1] - astConstant;
 
 		asteroids0[3+i].fPositions[0] = asteroids0[0+i].fPositions[0] + 3 * astConstant;
 		asteroids0[3+i].fPositions[1] = asteroids0[0+i].fPositions[1];
 
-	
-
 		asteroids0[4+i].fPositions[0] = asteroids0[0+i].fPositions[0] + 2 * astConstant;
 		asteroids0[4+i].fPositions[1] = asteroids0[0+i].fPositions[1] + astConstant;
 
-		
-
-	
-
 		asteroids0[5 + i].fPositions[0] = asteroids0[0 + i].fPositions[0] + astConstant;
 		asteroids0[5 + i].fPositions[1] = asteroids0[0 + i].fPositions[1] + astConstant;
-
-	
-
-		//asteroids0[1 + i].fPositions[0] = asteroids0[0 + i].fPositions[0] + astConstant;
-	//	asteroids0[1 + i].fPositions[1] = asteroids0[0 + i].fPositions[1] - astConstant;
+		
 	}
 
 	for (int j = 0; j < 60; j++)
@@ -463,7 +423,7 @@ int main()
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
 			//draw to the screen
-			glDrawElements(GL_LINES, 60, GL_UNSIGNED_BYTE, NULL);
+			glDrawElements(GL_LINE_LOOP, 60, GL_UNSIGNED_BYTE, NULL);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			//swap front and back buffers
@@ -485,7 +445,7 @@ int main()
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				playerShip[i].fPositions[1] += screenSize*.0001f;
+				playerShip[i].fPositions[1] += Globals::screenSize*.0001f;
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -500,7 +460,7 @@ int main()
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				playerShip[i].fPositions[1] -= screenSize*.0001f;
+				playerShip[i].fPositions[1] -= Globals::screenSize*.0001f;
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -530,7 +490,7 @@ int main()
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				playerShip[i].fPositions[0] -= screenSize*.0001f;
+				playerShip[i].fPositions[0] -= Globals::screenSize*.0001f;
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
