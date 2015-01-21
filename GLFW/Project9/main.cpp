@@ -9,6 +9,7 @@
 #include <time.h>
 #include "Globals.h"
 #include "Player.h"
+#include "Environment.h"
 int xPos = 450;
 int astConstant = 40;
 
@@ -45,6 +46,7 @@ int main()
 	//GLuint uiProgramTextured = myGlobals.CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");	
 	//Initialise GLFW
 	Player myShip;
+	Environment myStars;
 
 	//set up the mapping of the screen to pixel co-ordinates. Try changing these values to see what happens.
 	myGlobals.orthographicProjection = myGlobals.getOrtho(0, 1024, 0, 720, 0, 100);
@@ -54,11 +56,12 @@ int main()
 	while (!glfwWindowShouldClose(myGlobals.window))
 	{
 		//draw code goes here
-		glClearColor(0.1f, 0.2f, 0.1f, 0.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-	myShip.Move();
+		myShip.Move();
 		myShip.Draw();
+		myStars.DrawStars();
 		
 		glfwSwapBuffers(myGlobals.window);
 

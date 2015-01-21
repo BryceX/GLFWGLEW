@@ -45,8 +45,6 @@ void Player::Draw()
 
 {
 	Globals& myGlobals = Globals::instance();
-
-	
 	glUseProgram(uiProgramTextured);
 	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramTextured, "MVP");
 	
