@@ -9,23 +9,12 @@ class Player
 public:
 	unsigned int spriteID;
 	void Move();
+	void Draw();
 	Vertex* playerShip;
 	GLuint uiVBOplayerShip;
 	GLuint uiIBOplayerShip;
-	void Draw();
 	GLuint  uiProgramTextured;
 	GLuint  uiTextureId;
-
-
-
-
-
-
-
-
-
-
-
 	Player();
 	~Player();
 };

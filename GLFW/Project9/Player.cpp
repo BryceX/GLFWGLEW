@@ -7,6 +7,37 @@ Player::Player()
 	Globals myGlobals = Globals::instance();
 	glGenBuffers(1, &uiVBOplayerShip);
 	glGenBuffers(1, &uiIBOplayerShip);
+	
+	
+}
+void Player::Draw()
+//this is the fucking ship
+
+{
+	Globals myGlobals = Globals::instance();
+	glUseProgram(uiProgramTextured);
+	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramTextured, "MVP");
+
+	glBindTexture(GL_TEXTURE_2D, uiTextureId);
+	glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOplayerShip);
+	//send our orthographic projection info to the shader
+	glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, myGlobals.orthographicProjection);
+	//enable the vertex array state, since we're sending in an array of vertices
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	//specify where our vertex array is, how many components each vertex has, 
+	//the data type of each component and whether the data is normalised or not
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 8));
+	//draw to the screen
+	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//swap front and back buffers
+	glBindTexture(GL_TEXTURE_2D, 0);
 	//x position of the top corner
 	playerShip[0].fPositions[0] = myGlobals.screenSize / 2;
 	//y position of the top corner
@@ -71,36 +102,6 @@ Player::Player()
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
-	
-}
-void Player::Draw()
-//this is the fucking ship
-
-{
-	Globals myGlobals = Globals::instance();
-	glUseProgram(uiProgramTextured);
-	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramTextured, "MVP");
-
-	glBindTexture(GL_TEXTURE_2D, uiTextureId);
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOplayerShip);
-	//send our orthographic projection info to the shader
-	glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, myGlobals.orthographicProjection);
-	//enable the vertex array state, since we're sending in an array of vertices
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-	//specify where our vertex array is, how many components each vertex has, 
-	//the data type of each component and whether the data is normalised or not
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 8));
-	//draw to the screen
-	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//swap front and back buffers
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Player::Move()
