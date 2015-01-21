@@ -12,9 +12,10 @@ out vec2 UV;
 void main()
 {
 	vertColour = colour;
-        UV = vertexUV;
+    UV = vertexUV;
 
-        vec4 scaledPosition = MVP * position;
+    vec4 scaledPosition = MVP * position;
 
 	gl_Position = scaledPosition;
+	//gl_Position = vec4(0.0,0.0,0.0,0.0); // debugging
 }

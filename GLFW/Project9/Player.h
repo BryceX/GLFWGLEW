@@ -7,7 +7,6 @@
 class Player
 {
 public:
-	unsigned int spriteID;
 	void Move();
 	void Draw();
 	Vertex* playerShip;

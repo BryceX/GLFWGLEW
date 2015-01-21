@@ -14,22 +14,22 @@ int astConstant = 40;
 
 int main()
 {
-	Globals myGlobal = Globals::instance();
+	Globals& myGlobals = Globals::instance();
 
 	// init GLFW
 	if (!glfwInit())
 	{
 		return -1;
 	}
-	myGlobal.window = glfwCreateWindow(1024, 1024, "Hello World", NULL, NULL);
-	if (!myGlobal.window)
+	myGlobals.window = glfwCreateWindow(1024, 1024, "Hello World", NULL, NULL);
+	if (!myGlobals.window)
 	{
 		glfwTerminate();
 		return -1;
 	}
 
 	//make the window's context current
-	glfwMakeContextCurrent(myGlobal.window);
+	glfwMakeContextCurrent(myGlobals.window);
 
 	//………Insert this into the main.cpp example given in the setting up GLFW section – 
 	//once the glfw window has been created and after 'glfwMakeContextCurrent(window);'
@@ -41,33 +41,31 @@ int main()
 		return -1;
 	}
 	
-	GLuint uiProgramFlat = myGlobal.CreateProgram("VertexShader.glsl", "FlatFragmentShader.glsl");
-	GLuint uiProgramTextured = myGlobal.CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");
-	int width = 50, height = 50, bpp = 4;
-	GLuint uiTextureId = myGlobal.loadTexture("zeroprofile.jpg", width, height, bpp);
+	//GLuint uiProgramFlat = myGlobals.CreateProgram("VertexShader.glsl", "FlatFragmentShader.glsl");
+	//GLuint uiProgramTextured = myGlobals.CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");	
 	//Initialise GLFW
-	
-	
-	
-	//………
-	//create shader program
-	//find the position of the matrix variable in the shader so we can send info there later
-	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramFlat, "MVP");
+	Player myShip;
 
 	//set up the mapping of the screen to pixel co-ordinates. Try changing these values to see what happens.
-	float *orthographicProjection = myGlobal.getOrtho(0, 1024, 0, 720, 0, 100);
+	myGlobals.orthographicProjection = myGlobals.getOrtho(0, 1024, 0, 720, 0, 100);
 	//loop until the user closes the window
 
 
-	while (!glfwWindowShouldClose(myGlobal.window))
+	while (!glfwWindowShouldClose(myGlobals.window))
 	{
 		//draw code goes here
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.1f, 0.2f, 0.1f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glfwSwapBuffers(myGlobal.window);
+	myShip.Move();
+		myShip.Draw();
+		
+		glfwSwapBuffers(myGlobals.window);
 
-
+		if (glfwGetKey(myGlobals.window, GLFW_KEY_ESCAPE))
+		{
+			break;
+		}
 
 		//poll for and process events
 		glfwPollEvents();
