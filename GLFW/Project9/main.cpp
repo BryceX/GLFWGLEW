@@ -46,22 +46,28 @@ int main()
 	//GLuint uiProgramTextured = myGlobals.CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");	
 	//Initialise GLFW
 	Player myShip;
-	Environment myStars;
+	Environment backgroundObjects;
+	
 
+
+	
 	//set up the mapping of the screen to pixel co-ordinates. Try changing these values to see what happens.
 	myGlobals.orthographicProjection = myGlobals.getOrtho(0, 1024, 0, 720, 0, 100);
 	//loop until the user closes the window
 
-
+	
 	while (!glfwWindowShouldClose(myGlobals.window))
 	{
 		//draw code goes here
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
 		myShip.Move();
 		myShip.Draw();
-		myStars.DrawStars();
+		backgroundObjects.DrawStars();
+		//multiples of 6 make more ateroids
+		
+			backgroundObjects.DrawAsteroids();
+
 		
 		glfwSwapBuffers(myGlobals.window);
 

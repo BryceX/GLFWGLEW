@@ -8,6 +8,7 @@ Environment::Environment()
 	glGenBuffers(1, &uiVBOasteroids);
 	glGenBuffers(1, &uiIBOasteroids);
 	uiProgramFlat = myGlobals.CreateProgram("VertexShader.glsl", "FlatFragmentShader.glsl");
+	srand(time(NULL));
 	Vertex* stars = new Vertex[360];
 	for (int i = 0; i < 360; i++)
 	{
@@ -47,6 +48,57 @@ Environment::Environment()
 
 
 	}
+	Vertex* asteroids0 = new Vertex[6];
+	asteroids0[0].fPositions[0] = rand() % 900;
+	asteroids0[0].fPositions[1] = rand() % 900;
+
+	asteroids0[1].fPositions[0] = asteroids0[0].fPositions[0] + astConstant;
+	asteroids0[1].fPositions[1] = asteroids0[0].fPositions[1] - astConstant;
+
+	asteroids0[2].fPositions[0] = asteroids0[0].fPositions[0] + 2 * astConstant;
+	asteroids0[2].fPositions[1] = asteroids0[0].fPositions[1] - astConstant;
+
+	asteroids0[3].fPositions[0] = asteroids0[0].fPositions[0] + 3 * astConstant;
+	asteroids0[3].fPositions[1] = asteroids0[0].fPositions[1];
+
+	asteroids0[4].fPositions[0] = asteroids0[0].fPositions[0] + 2 * astConstant;
+	asteroids0[4].fPositions[1] = asteroids0[0].fPositions[1] + astConstant;
+
+	asteroids0[5].fPositions[0] = asteroids0[0].fPositions[0] + astConstant;
+	asteroids0[5].fPositions[1] = asteroids0[0].fPositions[1] + astConstant;
+
+
+
+	for (int j = 0; j < 6; j++)
+	{
+		asteroids0[j].fPositions[2] = 0.0f;
+		asteroids0[j].fPositions[3] = 1.0f;
+		asteroids0[j].fColours[0] = 0.0f;
+		asteroids0[j].fColours[1] = 1.0f;
+		asteroids0[j].fColours[2] = 0.0f;
+		asteroids0[j].fColours[3] = 0.0f;
+	}
+	if (uiVBOasteroids != 0)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, uiVBOasteroids);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 6, NULL, GL_STATIC_DRAW);
+		GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+		memcpy(vBuffer, asteroids0, sizeof(Vertex)* 6);
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+	if (uiIBOasteroids != 0)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOasteroids);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(char), NULL, GL_STATIC_DRAW);
+		GLvoid* iBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
+		for (int i = 0; i < 6; i++)
+		{
+			((char*)iBuffer)[i] = i;
+		}
+		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
 }
 void Environment::DrawStars()
 {
@@ -54,8 +106,8 @@ void Environment::DrawStars()
 	glUseProgram(uiProgramFlat);
 	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramFlat, "MVP");
 	//create some vertices
-	
-	srand(time(NULL));	// seed the random number jesus
+	srand(time(NULL));
+	// seed the random number jesus
 	//starz
 	glUseProgram(uiProgramFlat);
 	glBindBuffer(GL_ARRAY_BUFFER, uiVBOstars);
@@ -77,94 +129,33 @@ void Environment::DrawStars()
 	//swap front and back buffers
 	glBindTexture(GL_TEXTURE_2D, 0);		
 }
-/*
+
 void Environment::DrawAsteroids()
 {
-	Globals myGlobals& = Globals::instance();
+	Globals& myGlobals = Globals::instance();
+	glUseProgram(uiProgramFlat);
 	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramFlat, "MVP");
-	Vertex* asteroids0 = new Vertex[60];
-
-	for (int i = 0; i < 60; i += 6)
-	{
-		// 1st vert
-		asteroids0[0 + i].fPositions[0] = rand() % 900;
-		asteroids0[0 + i].fPositions[1] = rand() % 900;
-		// 2nd vert
-		asteroids0[1 + i].fPositions[0] = asteroids0[0 + i].fPositions[0] + astConstant;
-		asteroids0[1 + i].fPositions[1] = asteroids0[0 + i].fPositions[1] - astConstant;
-
-		asteroids0[2 + i].fPositions[0] = asteroids0[0 + i].fPositions[0] + 2 * astConstant;
-		asteroids0[2 + i].fPositions[1] = asteroids0[0 + i].fPositions[1] - astConstant;
-
-		asteroids0[3 + i].fPositions[0] = asteroids0[0 + i].fPositions[0] + 3 * astConstant;
-		asteroids0[3 + i].fPositions[1] = asteroids0[0 + i].fPositions[1];
-
-		asteroids0[4 + i].fPositions[0] = asteroids0[0 + i].fPositions[0] + 2 * astConstant;
-		asteroids0[4 + i].fPositions[1] = asteroids0[0 + i].fPositions[1] + astConstant;
-
-		asteroids0[5 + i].fPositions[0] = asteroids0[0 + i].fPositions[0] + astConstant;
-		asteroids0[5 + i].fPositions[1] = asteroids0[0 + i].fPositions[1] + astConstant;
-	}
-
-	for (int j = 0; j < 60; j++)
-	{
-		asteroids0[j].fPositions[2] = 0.0f;
-		asteroids0[j].fPositions[3] = 1.0f;
-		asteroids0[j].fColours[0] = 0.0f;
-		asteroids0[j].fColours[1] = 1.0f;
-		asteroids0[j].fColours[2] = 0.0f;
-		asteroids0[j].fColours[3] = 0.0f;
-	}
-
-	//create a windowed mode window and it's OpenGL context
-
-
-	//create ID for a vertex buffer object for the star
-
-	//VBO for asteroids
-	
-
-	if (uiVBOasteroids != 0)
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, uiVBOasteroids);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* 60, NULL, GL_STATIC_DRAW);
-		GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-		memcpy(vBuffer, asteroids0, sizeof(Vertex)* 60);
-		glUnmapBuffer(GL_ARRAY_BUFFER);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-	if (uiIBOasteroids != 0)
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOasteroids);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 60 * sizeof(char), NULL, GL_STATIC_DRAW);
-		GLvoid* iBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
-		for (int i = 0; i < 60; i++)
-		{
-			((char*)iBuffer)[i] = i;
-		}
-		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	}
-
+	//srand(time(NULL));
 	//meant to be asteroids
-	{
+	
 		glUseProgram(uiProgramFlat);
 		//glBindTexture(GL_TEXTURE_2D, uiTextureId);
 		glBindBuffer(GL_ARRAY_BUFFER, uiVBOasteroids);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOasteroids);
+		float * ortho = myGlobals.getOrtho(0, 1024, 0, 720, 0, 100);
 		glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, myGlobals.orthographicProjection);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
 		//draw to the screen
-		glDrawElements(GL_LINE_LOOP, 60, GL_UNSIGNED_BYTE, NULL);
+		glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_BYTE, NULL);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		//swap front and back buffers
 		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-}*/
+}
+
 
 Environment::~Environment()
 {
