@@ -23,6 +23,7 @@ int main()
 		return -1;
 	}
 	myGlobals.window = glfwCreateWindow(1024, 1024, "Hello World", NULL, NULL);
+	myGlobals.orthographicProjection = myGlobals.getOrtho(0, 1024, 0, 720, 0, 100);
 	if (!myGlobals.window)
 	{
 		glfwTerminate();
@@ -46,7 +47,7 @@ int main()
 	//GLuint uiProgramTextured = myGlobals.CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");	
 	//Initialise GLFW
 	Player myShip;
-	Environment backgroundObjects;
+	//Environment backgroundObjects;
 	
 
 
@@ -61,12 +62,12 @@ int main()
 		//draw code goes here
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		myShip.Move();
-		myShip.Draw();
-		backgroundObjects.DrawStars();
+		//myShip.Move();
+		myShip.Draw();//MEMORY LEAK
+		//backgroundObjects.DrawStars();
 		//multiples of 6 make more ateroids
 		
-			backgroundObjects.DrawAsteroids();
+			//backgroundObjects.DrawAsteroids();
 
 		
 		glfwSwapBuffers(myGlobals.window);

@@ -106,7 +106,7 @@ void Environment::DrawStars()
 	glUseProgram(uiProgramFlat);
 	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramFlat, "MVP");
 	//create some vertices
-	srand(time(NULL));
+	
 	// seed the random number jesus
 	//starz
 	glUseProgram(uiProgramFlat);

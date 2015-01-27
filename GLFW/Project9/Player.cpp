@@ -5,13 +5,9 @@
 Player::Player()
 {
 	Globals& myGlobals = Globals::instance();
-	glGenBuffers(1, &uiVBOplayerShip);
-	glGenBuffers(1, &uiIBOplayerShip);
-	playerShip = new Vertex[3];
-	uiProgramTextured = myGlobals.CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");
-	int width = 50, height = 50, bpp = 4; 
-	uiTextureId = myGlobals.loadTexture("zeroprofile.jpg", width, height, bpp);
 
+	//put vertex info first
+	playerShip = new Vertex[3];
 	playerShip[0].fPositions[0] = myGlobals.screenSize / 2;
 	//y position of the top corner
 	playerShip[0].fPositions[1] = myGlobals.screenSize / 2 + 10.0f;
@@ -39,26 +35,39 @@ Player::Player()
 	playerShip[1].fUVs[1] = 0.0f;
 	playerShip[2].fUVs[0] = 1.0f; //bottom right
 	playerShip[2].fUVs[1] = 0.0f;
+
+	//making buffers
+	glGenBuffers(1, &uiVBOplayerShip);	// VBO
+	glGenBuffers(1, &uiIBOplayerShip);	// IBO
+
+	// make the shaders
+	uiProgramTextured = myGlobals.CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");
+
+	// load the texture
+	int width = 50, height = 50, bpp = 4; 
+	uiTextureId = myGlobals.loadTexture("zeroprofile.jpg", width, height, bpp);
 }
 void Player::Draw()
-//this is the fucking ship
-
 {
 	Globals& myGlobals = Globals::instance();
+
+	// specify the shader program to be used for rendering
 	glUseProgram(uiProgramTextured);
+
+	// get the location of the MVP variable
 	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramTextured, "MVP");
 	
-	glBindTexture(GL_TEXTURE_2D, uiTextureId);
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOplayerShip);
-	//send our orthographic projection info to the shader
-	float * ortho = myGlobals.getOrtho(0, 1024, 0, 720, 0, 100);
+	glBindTexture(GL_TEXTURE_2D, uiTextureId);				// sets up the texture that we gon use
+	glBindBuffer(GL_ARRAY_BUFFER, uiVBOplayerShip);			// sets up the VBO we gon use
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBOplayerShip);	// sets up the IBO we gon use
 
+	// send the ortho to the shader
 	glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, myGlobals.orthographicProjection);
 	//enable the vertex array state, since we're sending in an array of vertices
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
+
 	//specify where our vertex array is, how many components each vertex has, 
 	//the data type of each component and whether the data is normalised or not
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
@@ -71,15 +80,15 @@ void Player::Draw()
 	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, NULL);
 	//glDrawElements(GL_POINTS, 3, GL_UNSIGNED_BYTE, NULL);
 	//glDrawArrays(GL_POINTS, 3, GL_UNSIGNED_BYTE);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);				// clear the currently bound buffer for VBO
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);		// clear the currently bound buffer for IBO
 	//swap front and back buffers
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);				// clear the currently bound buffer for texture
 	//x position of the top corner
 	
 
 
-	//check it succeeded
+	// send data to the IBO
 	if (uiIBOplayerShip != 0)
 	{
 		//bind IBO
@@ -98,7 +107,8 @@ void Player::Draw()
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
-	//check it succeeded
+
+	// send data to the VBO
 	if (uiVBOplayerShip != 0)
 	{
 		//bind VBO
@@ -116,6 +126,7 @@ void Player::Draw()
 }
 
 void Player::Move()
+
 {
 	Globals& myGlobals = Globals::instance();
 	if (glfwGetKey(myGlobals.window, GLFW_KEY_W) == GLFW_PRESS)
