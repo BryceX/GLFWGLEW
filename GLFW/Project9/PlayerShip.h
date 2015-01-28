@@ -4,11 +4,18 @@
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include "Globals.h"
-
-class Asteroids
+class PlayerShip
 {
 public:
+	Vertex vertices[3];
+	GLuint VBO;
+	GLuint IBO;
+	GLuint shader;
 
-	Asteroids();
-	~Asteroids();
+
+
+
+
+	PlayerShip();
+	~PlayerShip();
 };

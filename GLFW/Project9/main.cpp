@@ -9,15 +9,15 @@
 #include <time.h>
 #include "Globals.h"
 #include "Player.h"
-#include "Asteroids.h"
+#include "Environment.h"
 #include "Stars.h"
-#include "Animation.h"
-
+int xPos = 450;
+int astConstant = 40;
 
 int main()
 {
 	Globals& myGlobals = Globals::instance();
-	srand(time(NULL));
+
 	// init GLFW
 	if (!glfwInit())
 	{
@@ -48,10 +48,8 @@ int main()
 	//GLuint uiProgramTextured = myGlobals.CreateProgram("VertexShader.glsl", "TexturedFragmentShader.glsl");	
 	//Initialise GLFW
 	Player myShip;
-	Animation myOtherShip;
 	//Environment backgroundObjects;
-	Stars myStars[100];
-	Asteroids myAsteroids[10];
+	Stars myStars[50];
 
 
 	
@@ -67,14 +65,14 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		myShip.Move();
 		myShip.Draw();
+<<<<<<< HEAD
 		myOtherShip.Draw(0,0,0,0,0,0,0,0);
 		for (int i = 0; i < 100; i++)
+=======
+		for (int i = 0; i < 50; i++)
+>>>>>>> origin/experimental
 		{
 		myStars[i].Draw();
-		}
-		for (int i = 0; i < 10; i++)
-		{
-			myAsteroids[i].DrawAsteroids();
 		}
 		//backgroundObjects.DrawStars();
 		//multiples of 6 make more ateroids
