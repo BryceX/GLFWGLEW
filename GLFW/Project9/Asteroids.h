@@ -9,20 +9,6 @@ class Asteroids
 {
 public:
 
-	void DrawStars();
-	void DrawAsteroids();
-	Vertex* stars;
-	GLuint uiVBOstars;
-	GLuint uiIBOstars;
-	Vertex* asteroids0;
-	GLuint uiVBOasteroids;
-	GLuint uiIBOasteroids;
-	GLuint uiProgramFlat;
-	int astConstant = 40;
-
-
-
 	Asteroids();
 	~Asteroids();
-	
 };
