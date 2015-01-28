@@ -45,7 +45,7 @@ Player::Player()
 
 	// load the texture
 	int width = 50, height = 50, bpp = 4; 
-	uiTextureId = myGlobals.loadTexture("zeroprofile.jpg", width, height, bpp);
+	uiTextureId = myGlobals.loadTexture("mario.jpg", width, height, bpp);
 }
 void Player::Draw()
 {
