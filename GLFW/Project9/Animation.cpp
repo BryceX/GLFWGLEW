@@ -8,20 +8,19 @@ Animation::Animation()
 
 	//put vertex info first
 	playerShip = new Vertex[4];
-	playerShip[0].fPositions[0] = myGlobals.screenSize /  3 - 20 ;
+	playerShip[0].fPositions[0] = 0;
 	//y position of the top corner
-	playerShip[0].fPositions[1] = myGlobals.screenSize / 3 + 20.0f;
+	playerShip[0].fPositions[1] = 0;
 	//x position of the left corner 
-	playerShip[1].fPositions[0] = myGlobals.screenSize / 3 + 20.0f;
+	playerShip[1].fPositions[0] = 0;
 	//y position of the left corner
-	playerShip[1].fPositions[1] = myGlobals.screenSize / 3 + 20.0f;
+	playerShip[1].fPositions[1] = 0;
 	//x position of the right corner
-	playerShip[2].fPositions[0] = myGlobals.screenSize / 3 + 20.0f;
+	playerShip[2].fPositions[0] = 0;
 	//y pos right corner
-	playerShip[2].fPositions[1] = myGlobals.screenSize / 3 - 20.0f;
-
-	playerShip[3].fPositions[0] = myGlobals.screenSize / 3 - 20.0f;
-	playerShip[3].fPositions[1] = myGlobals.screenSize / 3 - 20.0f;
+	playerShip[2].fPositions[1] = 0;
+	playerShip[3].fPositions[0] = 0;
+	playerShip[3].fPositions[1] = 0;
 	for (int i = 0; i < 4; i++)
 	{
 		playerShip[i].fPositions[2] = 0.0f;
@@ -35,11 +34,11 @@ Animation::Animation()
 	playerShip[0].fUVs[0] = 0.0f; //top of the triangle
 	playerShip[0].fUVs[1] = 0.0f;
 
-	playerShip[1].fUVs[0] = .0f; //bottom left
-	playerShip[1].fUVs[1] = 1.0f;
+	playerShip[1].fUVs[0] = 1.0f; //bottom left
+	playerShip[1].fUVs[1] = 0.0f;
 
-	playerShip[2].fUVs[0] = 1.0f; //bottom right
-	playerShip[2].fUVs[1] = 0.0f;
+	playerShip[2].fUVs[0] = 0.0f; //bottom right
+	playerShip[2].fUVs[1] = 1.0f;
 
 	playerShip[3].fUVs[0] = 1.0f;
 	playerShip[3].fUVs[1] = 1.0f;
@@ -55,7 +54,7 @@ Animation::Animation()
 	int width = 50, height = 50, bpp = 4;
 	uiTextureId = myGlobals.loadTexture("mario.jpg", width, height, bpp);
 }
-void Animation::Draw()
+void Animation::Draw(float xpos1, float ypos1, float xpos2, float ypos2, float xpos3, float ypos3, float xpos4, float ypos4)
 {
 	Globals& myGlobals = Globals::instance();
 
@@ -86,7 +85,7 @@ void Animation::Draw()
 	
 
 	//glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_BYTE, NULL);
-	glDrawArrays(GL_QUADS, 0, GL_UNSIGNED_BYTE);
+	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, NULL);
 	//glDrawElements(GL_POINTS, 3, GL_UNSIGNED_BYTE, NULL);
 	//glDrawArrays(GL_POINTS, 3, GL_UNSIGNED_BYTE);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);				// clear the currently bound buffer for VBO
@@ -134,7 +133,7 @@ void Animation::Draw()
 	}
 }
 
-void Animation::Move()
+/*void Animation::Move()
 
 {
 	Globals& myGlobals = Globals::instance();
@@ -198,7 +197,7 @@ void Animation::Move()
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
-}
+}*/
 
 
 Animation::~Animation()

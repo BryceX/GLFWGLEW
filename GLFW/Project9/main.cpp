@@ -67,7 +67,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		myShip.Move();
 		myShip.Draw();
-		myOtherShip.Draw();
+		myOtherShip.Draw(0,0,0,0,0,0,0,0);
 		for (int i = 0; i < 100; i++)
 		{
 		myStars[i].Draw();
