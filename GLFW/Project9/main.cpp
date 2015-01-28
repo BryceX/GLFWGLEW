@@ -10,6 +10,7 @@
 #include "Globals.h"
 #include "Player.h"
 #include "Environment.h"
+#include "Stars.h"
 int xPos = 450;
 int astConstant = 40;
 
@@ -48,7 +49,7 @@ int main()
 	//Initialise GLFW
 	Player myShip;
 	//Environment backgroundObjects;
-	
+	Stars myStars[50];
 
 
 	
@@ -62,12 +63,15 @@ int main()
 		//draw code goes here
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		//myShip.Move();
-		myShip.Draw();//MEMORY LEAK
+		myShip.Move();
+		myShip.Draw();
+		for (int i = 0; i < 50; i++)
+		{
+		myStars[i].Draw();
+		}
 		//backgroundObjects.DrawStars();
 		//multiples of 6 make more ateroids
-		
-			//backgroundObjects.DrawAsteroids();
+		//backgroundObjects.DrawAsteroids();
 
 		
 		glfwSwapBuffers(myGlobals.window);

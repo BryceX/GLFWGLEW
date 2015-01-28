@@ -14,7 +14,7 @@ public:
 	Vertex* stars;
 	GLuint uiVBOstars;
 	GLuint uiIBOstars;
-	Vertex* asteroids;
+	Vertex* asteroids0;
 	GLuint uiVBOasteroids;
 	GLuint uiIBOasteroids;
 	GLuint uiProgramFlat;

@@ -74,11 +74,17 @@
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Asteroids.cpp" />
+    <ClCompile Include="PlayerShip.cpp" />
+    <ClCompile Include="Stars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Asteroids.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerShip.h" />
+    <ClInclude Include="Stars.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FlatFragmentShader.glsl" />
